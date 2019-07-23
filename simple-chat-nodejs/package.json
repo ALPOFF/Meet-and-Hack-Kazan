@@ -1,0 +1,16 @@
+{
+  "name": "testnode",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "test": "c",
+    "start": "node index.js"
+  },
+  "author": "ALPOFF",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.3.0-beta2",
+    "ws": "^7.1.1"
+  }
+}
