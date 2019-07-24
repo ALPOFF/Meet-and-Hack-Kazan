@@ -1,6 +1,38 @@
     let latitude = 55.753340;
     let longitude = 48.743858;
 
+    const Data = { 
+        "0": {
+            "surname": "Иванов",
+            "latitude": 55.753141,
+            "longitude": 48.743111 
+        },
+        "1": {
+            "surname": "Петров",
+            "latitude": 55.752676,
+            "longitude": 48.741427 
+        },
+        "2": {
+            "surname": "Сидоров",
+            "latitude": 55.753769,
+            "longitude": 48.739904 
+        },
+        "3": {
+            "surname": "Смирнов",
+            "latitude": 55.749261,
+            "longitude": 48.743895 
+        },
+        "4": {
+            "surname": "Ваньков",
+            "latitude": 55.748204,
+            "longitude": 48.741706 
+        },
+        "5": {
+            "surname": "Костылев",
+            "latitude": 55.749092,
+            "longitude": 48.739571 
+        },
+      }
 
 
     // Функция ymaps.ready() будет вызвана, когда
@@ -61,6 +93,35 @@
 
    /*     }, 2000);
 */
+
+
+
+
+
+let showWorker = function(id) {
+    let latworker = 0;
+    let longworker = 0;
+    console.log("NAZHAL");
+
+    latworker = Data[id].latitude;
+    longworker = Data[id].longitude;
+
+    myMap.geoObjects
+        .add(new ymaps.Placemark([latitude, longitude], {
+            balloonContent: '<strong>ТУТ WORKER</strong>'
+        }, {
+            preset: 'islands#circleDotIcon',
+            iconColor: 'blue'
+        }));
+}
+
+
+//show worker on map
+$('.shwr').on('click', showWorker(0));
+
+
+
+
     }
 
 
@@ -72,13 +133,9 @@ window.onload = function() {
                     countries.forEach(myFunction);
 
                     function myFunction(item, index) {
-                      document.getElementById("work").innerHTML += "id" + index + ": " + item + "<button id="+index+">Показать на карте</button>"+ "<button id="+index+">Задачи</button>"+"<br>"; 
+                      document.getElementById("work").innerHTML += "id" + index + ": " + item + "<button style=\"shwr\" id="+index+">Показать на карте</button>"+ "<button id="+index+">Задачи</button>"+"<br>"; 
                     }
                 };
 
 
 
-//show worker on map
-let showWorker = function(id, ) {
-
-}
