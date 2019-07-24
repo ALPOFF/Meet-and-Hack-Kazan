@@ -29,25 +29,7 @@
  
 
     // Создаем геообъект с типом геометрии "Точка".
-        myGeoObject = new ymaps.GeoObject({
-            // Описание геометрии.
-            geometry: {
-                type: "Point",
-                coordinates: [55.8, 37.8]
-            },
-            // Свойства.
-            properties: {
-                // Контент метки.
-                iconContent: 'Я тащусь',
-                hintContent: 'Ну давай уже тащи'
-            }
-        }, {
-            // Опции.
-            // Иконка метки будет растягиваться под размер ее содержимого.
-            preset: 'islands#blackStretchyIcon',
-            // Метку можно перемещать.
-            draggable: true
-        }),
+      
         myPieChart = new ymaps.Placemark([
             55.847, 37.6
         ], {
@@ -58,30 +40,13 @@
                 {weight: 4, color: '#82CDFF'}
             ],
             iconCaption: "Диаграмма"
-        }, {
-            // Зададим произвольный макет метки.
-            iconLayout: 'default#pieChart',
-            // Радиус диаграммы в пикселях.
-            iconPieChartRadius: 30,
-            // Радиус центральной части макета.
-            iconPieChartCoreRadius: 10,
-            // Стиль заливки центральной части.
-            iconPieChartCoreFillStyle: '#ffffff',
-            // Cтиль линий-разделителей секторов и внешней обводки диаграммы.
-            iconPieChartStrokeStyle: '#ffffff',
-            // Ширина линий-разделителей секторов и внешней обводки диаграммы.
-            iconPieChartStrokeWidth: 3,
-            // Максимальная ширина подписи метки.
-            iconPieChartCaptionMaxWidth: 200
         });
 
 
 /*        var timerId = setInterval(function() {
         */
     
-                 myMap.geoObjects
-        .add(myGeoObject)
-        .add(myPieChart)
+        myMap.geoObjects
         .add(new ymaps.Placemark([latitude, longitude], {
             balloonContent: '<strong>ТУТ ЦЕНТР</strong>'
         }, {
@@ -96,10 +61,24 @@
 
    /*     }, 2000);
 */
-       
-
-        
-   
- 
-    
     }
+
+
+
+
+//list workers in dialog window
+window.onload = function() {
+                    const countries = ['Петров А.С.', 'Иванов С.А.', 'Сидоров Д.В.', 'Иванов П.Р.'];;
+                    countries.forEach(myFunction);
+
+                    function myFunction(item, index) {
+                      document.getElementById("work").innerHTML += "id" + index + ": " + item + "<button id="+index+">Показать на карте</button>"+ "<button id="+index+">Задачи</button>"+"<br>"; 
+                    }
+                };
+
+
+
+//show worker on map
+let showWorker = function(id, ) {
+
+}
