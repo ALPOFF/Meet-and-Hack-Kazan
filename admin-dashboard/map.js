@@ -1,3 +1,8 @@
+    let latitude = 55.753340;
+    let longitude = 48.743858;
+
+
+
     // Функция ymaps.ready() будет вызвана, когда
     // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
     ymaps.ready(init);
@@ -64,13 +69,31 @@
             iconPieChartCaptionMaxWidth: 200
         });
 
-    myMap.geoObjects
+
+/*        var timerId = setInterval(function() {
+        */
+    
+                 myMap.geoObjects
         .add(myGeoObject)
         .add(myPieChart)
-        .add(new ymaps.Placemark([55.753340, 48.743858], {
+        .add(new ymaps.Placemark([latitude, longitude], {
             balloonContent: '<strong>ТУТ ЦЕНТР</strong>'
         }, {
             preset: 'islands#circleDotIcon',
             iconColor: 'yellow'
         }));
+
+        latitude += 0.000060;
+        console.log(latitude);
+        longitude += 0.000060;
+        console.log(longitude);
+
+   /*     }, 2000);
+*/
+       
+
+        
+   
+ 
+    
     }
