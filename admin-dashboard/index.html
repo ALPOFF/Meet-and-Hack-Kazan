@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" href="jquery-ui.css">
 	<meta charset="UTF-8">
 	<title>MapTest</title>
-	<script src="https://api-maps.yandex.ru/2.1/?apikey=a71e978f-de6e-4f44-b669-7050d641b1a1&lang=ru_RU" type="text/javascript">
-    </script>
+	<script src="https://api-maps.yandex.ru/2.1/?apikey=a71e978f-de6e-4f44-b669-7050d641b1a1&lang=ru_RU" type="text/javascript"></script>
+	  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	 
 
         <script type="text/javascript">
     // Функция ymaps.ready() будет вызвана, когда
@@ -83,10 +86,25 @@
             iconColor: 'yellow'
         }));
     }
+
+
+
+
+
+
+
+$( function() {
+    $( "#dialog" ).dialog();
+  } );
+
+
 </script>
 </head>
 <body>
 	    <div id="map" style="width: 600px; height: 400px"></div>
-	
+<div id="dialog" title="Basic dialog">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+		
 </body>
 </html>
