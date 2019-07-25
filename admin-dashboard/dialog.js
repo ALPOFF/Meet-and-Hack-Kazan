@@ -2,6 +2,7 @@
 $( function() {
     $( "#dialog" ).dialog({
     	autoOpen: true,
+    	position: { my: 'left', at: 'left+150' },
           open: function(event, ui) { $('.ui-dialog-titlebar-close').hide(); }
         });
   } );

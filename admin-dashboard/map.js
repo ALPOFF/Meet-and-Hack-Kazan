@@ -57,13 +57,10 @@ window.onload = function() {
         DataNew = JSON.parse(e.data.split("-")[1]);
     console.log(DataNew[0].name);
 
-
-   
-
-
     for (cnt = 0; cnt < Object.keys(DataNew).length; cnt++)
      {
-      document.getElementById("dialog").innerHTML += "id" + DataNew[cnt].id + ": " + DataNew[cnt].name + "<button class=\"shwr\" id="+DataNew[cnt].id+">Уточнить данные</button>"+"<br>"; 
+        
+      document.getElementById("dialog").innerHTML += "<button class=\"shwr\" id="+DataNew[cnt].id+">"+"id" + DataNew[cnt].id + ": " + DataNew[cnt].name + "</button>"+"<br>"; 
 
 console.log(DataNew[cnt].name);
 console.log(DataNew[cnt].id);
@@ -72,12 +69,15 @@ console.log(DataNew[cnt].id);
 
  }
 
+
  else if (e.data.split("-")[0] == "TASK") {
 
 
     DataNewTask = JSON.parse(e.data.split("-")[1]);
-    console.log("34 "+DataNewTask[0].deadline);
-
+    for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {
+        console.log("34 "+DataNewTask[tasks_counter].text);
+    }
+    
 
    function getTask(idsk) {
     console.log("IDSK VNUTRI" + idsk);
@@ -86,10 +86,19 @@ console.log(DataNew[cnt].id);
         autoOpen: false,
         title: 'Задание!'
     });
- 
+       
+                //for many tasks
+/*       for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {*/
+        console.log("KOL-VO: "+Object.keys(DataNewTask).length);
     $('#dialogTask').dialog('open');
      document.getElementById("dialogTask").innerHTML = ""; 
-     document.getElementById("dialogTask").innerHTML += DataNewTask[0].deadline;
+     document.getElementById("dialogTask").innerHTML += DataNewTask[0].text;
+     /*}*/
+/*     
+    //for one task
+    $('#dialogTask').dialog('open');
+     document.getElementById("dialogTask").innerHTML = ""; 
+     document.getElementById("dialogTask").innerHTML += DataNewTask[0].deadline;*/
 };
 
 
@@ -98,7 +107,7 @@ console.log(DataNew[cnt].id);
     console.log("IDS: "+idsk)
 
     $(".shwr").on('click', getTask(idsk));
-
+    //alert("VVERHU")
 })
  
  }
@@ -191,9 +200,8 @@ function showWorker(ids) {
 
 
 
-
-
 //show worker on map
+
 document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
     let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
     conn.send("id_from_admin:"+ids);
@@ -208,7 +216,7 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
     }
 
     $(".shwr").on('click', showWorker(ids));
-});
+ });
 
 
 conn.onopen = () => {

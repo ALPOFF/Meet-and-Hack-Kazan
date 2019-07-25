@@ -75,7 +75,7 @@ else if(coord_arr[0]=="status"){
     if(err) {
         return console.error('error running query', err);
     }
-    webSocket.send(JSON.stringify(res.rows));
+    //webSocket.send(JSON.stringify(res.rows));
 });
 
 
