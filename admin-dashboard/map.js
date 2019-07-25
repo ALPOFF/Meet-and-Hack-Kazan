@@ -154,24 +154,20 @@ function showWorker(ids) {
 
 
 //show worker on map
+document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
+    let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
+    conn.send(ids);
+    $(".shwr").on('click', showWorker(ids));
+});
+conn.onopen = () => {
+ 
+ conn.send('hello');
 
+}
     }
 
 
 
-
-    let l = 9;
-document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
-    let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
- 
-    $(".shwr").on('click', showWorker(ids));
-});
-
-
-
-conn.onopen = () => conn.send('hello'+l);
-
-
-
+    
 
   };
