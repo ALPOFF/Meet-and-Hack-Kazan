@@ -119,7 +119,7 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
     if(err) {
         return console.error('error running query', err);
     }
-    webSocketAdmin.send("USER "+JSON.stringify(res.rows));
+    webSocketAdmin.send("USER-"+JSON.stringify(res.rows));
     console.log("USER "+JSON.stringify(res.rows));
 });
 }
@@ -129,7 +129,7 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
     if(err) {
         return console.error('error running query', err);
     }
-    webSocketAdmin.send(JSON.stringify(res.rows));
+    webSocketAdmin.send("TASK-"+JSON.stringify(res.rows));
     console.log("TASK "+JSON.stringify(res.rows))
 });
 }

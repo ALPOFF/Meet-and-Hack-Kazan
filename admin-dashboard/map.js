@@ -48,14 +48,13 @@
 window.onload = function() {
     let DataNew = {};
     let Names = [];
+    let DataNewTask = {};
                         // создать подключение
     var conn = new WebSocket('ws://localhost:3000/echo');
     conn.onmessage = function(e){ console.log("POLUCHIL: "+ e.data);
-    console.log("TASK "+e.data);
-    console.log(e.data.split(" ")[1]);
 
-    if (e.data.split(" ")[0] == "USER") {
-        DataNew = JSON.parse(e.data.split(" ")[1]);
+    if (e.data.split("-")[0] == "USER") {
+        DataNew = JSON.parse(e.data.split("-")[1]);
     console.log(DataNew[0].name);
 
 
@@ -73,6 +72,40 @@ console.log(DataNew[cnt].id);
 
  }
 
+ else if (e.data.split("-")[0] == "TASK") {
+
+
+    DataNewTask = JSON.parse(e.data.split("-")[1]);
+    console.log("34 "+DataNewTask[0].deadline);
+
+
+   function getTask(idsk) {
+    console.log("IDSK VNUTRI" + idsk);
+
+    $('#dialogTask').dialog({
+        autoOpen: false,
+        title: 'Задание!'
+    });
+ 
+    $('#dialogTask').dialog('open');
+     document.getElementById("dialogTask").innerHTML = ""; 
+     document.getElementById("dialogTask").innerHTML += DataNewTask[0].deadline;
+};
+
+
+     document.querySelector('#dialog').addEventListener('click', function(event){ // Вешаем обработчик клика на UL, не LI
+    let idsk = event.target.id;  
+    console.log("IDS: "+idsk)
+
+    $(".shwr").on('click', getTask(idsk));
+
+})
+ 
+ }
+
+else {
+    console.log("error")
+}
 
 
     };
@@ -136,9 +169,8 @@ console.log(DataNew[cnt].id);
 
  
 function showWorker(ids) {
-          myCollection.removeAll();
 
- 
+    myCollection.removeAll();
 
     latworker = DataNew[ids].latitude;
 
@@ -152,17 +184,13 @@ function showWorker(ids) {
         });
     myCollection.add(placemark);
 
-
-
-    $('#dialogTask').dialog({
-        autoOpen: false,
-        title: 'Задание!'
-    });
- 
-    $('#dialogTask').dialog('open');
-     document.getElementById("dialogTask").innerHTML = ""; 
-     document.getElementById("dialogTask").innerHTML += Data[ids].task; 
 }
+
+
+
+
+
+
 
 
 //show worker on map
@@ -181,6 +209,8 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
 
     $(".shwr").on('click', showWorker(ids));
 });
+
+
 conn.onopen = () => {
  
  conn.send('hello');
