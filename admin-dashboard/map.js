@@ -117,7 +117,7 @@ function showWorker(ids) {
         });
     myCollection.add(placemark);
 
-    
+
 
     $('#dialogTask').dialog({
         autoOpen: false,
@@ -151,7 +151,22 @@ window.onload = function() {
                     function myFunction(item, index) {
                       document.getElementById("dialog").innerHTML += "id" + index + ": " + item + "<button class=\"shwr\" id="+index+">Уточнить данные</button>"+"<br>"; 
                     }
+
+
+
+                    // создать подключение
+ var conn = new WebSocket('ws://localhost:7777/echo');
+conn.onmessage = function(e){ console.log(e.data); };
+conn.onopen = () => conn.send('hello');
+
+ 
+
+ 
                 };
 
 
 
+//websocket
+
+
+ 
