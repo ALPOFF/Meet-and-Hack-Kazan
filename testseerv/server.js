@@ -50,27 +50,44 @@ pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], fun
         return console.error('error running query', err);
     }
     client_user_id = res.rows[0].user_id;
-    console.log("YYY"+client_user_id)
-    console.log(1)
-});
-console.log("ZZZ"+client_user_id);
 
-
-pool.query('SELECT * FROM public.task WHERE "user_id"=($1::int)', [client_user_id], function(err, res) {
+    pool.query('SELECT id, deadline, text, status FROM public.task WHERE "user_id"=($1::int)', [client_user_id], function(err, res) {
     if(err) {
         return console.error('error running query', err);
     }
-    console.log("TUT POOL"+JSON.stringify(res));
-    console.log("USER_ID: "+res.rows[0]);
-  console.log(2)
+    webSocket.send(JSON.stringify(res.rows));
+});
+});
+}
+else if(coord_arr[0]=="status"){
+  pool.query('UPDATE public.task SET "status"=true WHERE "user_id"='+client_user_id, function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    console.log('number: "vivelos"');
+    pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    client_user_id = res.rows[0].user_id;
+
+    pool.query('SELECT id, deadline, text, status FROM public.task WHERE "user_id"=($1::int)', [client_user_id], function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    webSocket.send(JSON.stringify(res.rows));
 });
 
 
+});
+});
 }
 
-
 else {
-pool.query('INSERT INTO public.user_coord (user_id, latitude, longitude) VALUES ($1::int, $2::text, $3::text)', [client_user_id, coord_arr[0], coord_arr[1]], function(err, res) {
+  let value = 'DO $do$ BEGIN IF (SELECT "user_id" FROM public.user_coord WHERE "user_id" = '+client_user_id+') = NULL THEN INSERT INTO public.user_coord (user_id, latitude,longitude) VALUES ('+client_user_id+', '+coord_arr[0]+', '+coord_arr[1]+'); ELSE UPDATE public.user_coord SET "latitude" = ('+coord_arr[0]+'), "longitude" = ('+coord_arr[1]+') WHERE "user_id" = ('+client_user_id+'); END IF; END $do$';
+
+
+pool.query(value, function(err, res) {
     if(err) {
         return console.error('error running query', err);
     }
@@ -78,24 +95,41 @@ pool.query('INSERT INTO public.user_coord (user_id, latitude, longitude) VALUES 
 });
 }
 
-
-
-
-
-
   });
+
 });
 
-/*function broadcast(data) {
-  webSocketServer.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
+
+
+const webSocketServerAdmin = new WebSocket.Server({ port: 3000 });
+
+webSocketServerAdmin.on('connection', (webSocketAdmin) => {
+  webSocketAdmin.on('message', (messageAdmin) => {
+    console.log('Received:', messageAdmin);
+    const msg = messageAdmin;
+    const pool = new Pool(config);
+    pool.on('error', function (err, client) {
+    console.error('idle client error', err.message, err.stack);
+ 
+});
+
+    if (msg == "hello")  {
+      console.log("IFIF");
+    pool.query('SELECT * FROM public.user AS u, public.user_coord AS us where us.user_id = u.id ', function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
     }
-  });
-}*/
+    webSocketAdmin.send(JSON.stringify(res.rows));
+    console.log("OTVET: "+JSON.stringify(res.rows))
+});
+}
+
+else {
+  console.log("ERROR");
+}
 
 
 
-//queries
+});
 
-
+});

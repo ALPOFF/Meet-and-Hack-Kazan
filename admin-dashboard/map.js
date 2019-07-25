@@ -2,6 +2,7 @@
     let longitude = 48.743858;
     let myCollection;
 
+
     const Data = { 
         "0": {
             "surname": "Иванов",
@@ -41,7 +42,37 @@
         },
       }
 
+
+
+ //list workers in dialog window
+window.onload = function() {
+    let DataNew = {};
+    let Names = [];
+                        // создать подключение
+    var conn = new WebSocket('ws://localhost:3000/echo');
+    conn.onmessage = function(e){ console.log("POLUCHIL: "+ e.data);
+    console.log(JSON.parse(e.data));
+    DataNew = JSON.parse(e.data);
+    console.log(DataNew[0].name);
+
+    for (i = 0; i < Object.keys(DataNew).length; i++) {
+        Names.push(DataNew[i].name);
+    }
+    console.log(Names);
+
+    Names.forEach(myFunction);
+
+    function myFunction(item, index) {
+      document.getElementById("dialog").innerHTML += "id" + index + ": " + item + "<button class=\"shwr\" id="+index+">Уточнить данные</button>"+"<br>"; 
+    }
+
+    };
  
+
+                   
+               
+//websocket
+
 
     // Функция ymaps.ready() будет вызвана, когда
     // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
@@ -65,10 +96,6 @@
 
       myCollection = new ymaps.GeoObjectCollection();
 
-
-
-
-
     // Создаем геообъект с типом геометрии "Точка".
       
         myPieChart = new ymaps.Placemark([
@@ -83,7 +110,6 @@
             iconCaption: "Диаграмма"
         });
 
-
 /*        var timerId = setInterval(function() {
         */
     
@@ -96,9 +122,6 @@
    /*     }, 2000);
 */
 
-
-
-
     let latworker = 0;
     let longworker = 0;
 
@@ -106,11 +129,11 @@
 function showWorker(ids) {
           myCollection.removeAll();
 
-    latworker = Data[ids].latitude;
-    longworker = Data[ids].longitude;
+    latworker = DataNew[ids].latitude;
+    longworker = DataNew[ids].longitude;
 
     let placemark = new ymaps.Placemark([latworker, longworker], {
-            balloonContent: '<strong>ТУТ WORKER</strong>'
+            balloonContent: '<strong>ТУТ WORKER'+latworker+":"+longworker+'</strong>'
         }, {
             preset: 'islands#circleDotIcon',
             iconColor: 'blue'
@@ -131,6 +154,13 @@ function showWorker(ids) {
 
 
 //show worker on map
+
+    }
+
+
+
+
+    let l = 9;
 document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
     let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
  
@@ -139,34 +169,9 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
 
 
 
-    }
+conn.onopen = () => conn.send('hello'+l);
 
 
 
-//list workers in dialog window
-window.onload = function() {
-                    const countries = ['Петров А.С.', 'Иванов С.А.', 'Исаев  Д.В.', 'Иванов П.Р.'];
-                    countries.forEach(myFunction);
 
-                    function myFunction(item, index) {
-                      document.getElementById("dialog").innerHTML += "id" + index + ": " + item + "<button class=\"shwr\" id="+index+">Уточнить данные</button>"+"<br>"; 
-                    }
-
-
-
-                    // создать подключение
- var conn = new WebSocket('ws://localhost:7777/echo');
-conn.onmessage = function(e){ console.log(e.data); };
-conn.onopen = () => conn.send('hello');
-
- 
-
- 
-                };
-
-
-
-//websocket
-
-
- 
+  };
