@@ -51,20 +51,29 @@ window.onload = function() {
                         // создать подключение
     var conn = new WebSocket('ws://localhost:3000/echo');
     conn.onmessage = function(e){ console.log("POLUCHIL: "+ e.data);
-    console.log(JSON.parse(e.data));
-    DataNew = JSON.parse(e.data);
+    console.log("TASK "+e.data);
+    console.log(e.data.split(" ")[1]);
+
+    if (e.data.split(" ")[0] == "USER") {
+        DataNew = JSON.parse(e.data.split(" ")[1]);
     console.log(DataNew[0].name);
 
-    for (i = 0; i < Object.keys(DataNew).length; i++) {
-        Names.push(DataNew[i].name);
-    }
-    console.log(Names);
 
-    Names.forEach(myFunction);
+   
 
-    function myFunction(item, index) {
-      document.getElementById("dialog").innerHTML += "id" + index + ": " + item + "<button class=\"shwr\" id="+index+">Уточнить данные</button>"+"<br>"; 
-    }
+
+    for (cnt = 0; cnt < Object.keys(DataNew).length; cnt++)
+     {
+      document.getElementById("dialog").innerHTML += "id" + DataNew[cnt].id + ": " + DataNew[cnt].name + "<button class=\"shwr\" id="+DataNew[cnt].id+">Уточнить данные</button>"+"<br>"; 
+
+console.log(DataNew[cnt].name);
+console.log(DataNew[cnt].id);
+     
+ }
+
+ }
+
+
 
     };
  
@@ -129,7 +138,10 @@ window.onload = function() {
 function showWorker(ids) {
           myCollection.removeAll();
 
+ 
+
     latworker = DataNew[ids].latitude;
+
     longworker = DataNew[ids].longitude;
 
     let placemark = new ymaps.Placemark([latworker, longworker], {
@@ -156,7 +168,17 @@ function showWorker(ids) {
 //show worker on map
 document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
     let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
-    conn.send(ids);
+    conn.send("id_from_admin:"+ids);
+
+    for (let cn in DataNew) {
+         
+        if (DataNew[cn].id == ids) {
+            ids = cn;
+            console.log("ITOG: "+ids);
+            console.log(DataNew[cn].id)
+        }
+    }
+
     $(".shwr").on('click', showWorker(ids));
 });
 conn.onopen = () => {

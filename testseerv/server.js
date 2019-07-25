@@ -84,7 +84,7 @@ else if(coord_arr[0]=="status"){
 }
 
 else {
-  let value = 'DO $do$ BEGIN IF (SELECT "user_id" FROM public.user_coord WHERE "user_id" = '+client_user_id+') != '+client_user_id+' THEN INSERT INTO public.user_coord (user_id, latitude,longitude) VALUES ('+client_user_id+', '+coord_arr[0]+', '+coord_arr[1]+'); ELSE UPDATE public.user_coord SET "latitude" = ('+coord_arr[0]+'), "longitude" = ('+coord_arr[1]+') WHERE "user_id" = ('+client_user_id+'); END IF; END $do$';
+  let value = 'DO $do$ BEGIN IF (SELECT "user_id" FROM public.user_coord WHERE "user_id" = '+client_user_id+') is NULL THEN INSERT INTO public.user_coord (user_id, latitude,longitude) VALUES ('+client_user_id+', '+coord_arr[0]+', '+coord_arr[1]+'); ELSE UPDATE public.user_coord SET "latitude" = ('+coord_arr[0]+'), "longitude" = ('+coord_arr[1]+') WHERE "user_id" = ('+client_user_id+'); END IF; END $do$';
 
 
 pool.query(value, function(err, res) {
@@ -119,8 +119,18 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
     if(err) {
         return console.error('error running query', err);
     }
+    webSocketAdmin.send("USER "+JSON.stringify(res.rows));
+    console.log("USER "+JSON.stringify(res.rows));
+});
+}
+    else if (msg.split(":")[0] == 'id_from_admin') {
+
+        pool.query('SELECT * FROM public.task WHERE "user_id" = '+msg.split(":")[1], function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
     webSocketAdmin.send(JSON.stringify(res.rows));
-    console.log("OTVET: "+JSON.stringify(res.rows))
+    console.log("TASK "+JSON.stringify(res.rows))
 });
 }
 
