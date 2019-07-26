@@ -9,6 +9,7 @@
  //list workers in dialog window
 window.onload = function() {
     let DataNew = {};
+    let DataNewCoord = {};
     let Names = [];
     let DataNewTask = {};
                         // создать подключение
@@ -28,6 +29,11 @@ console.log(DataNew[cnt].name);
 console.log(DataNew[cnt].id);
      
  }
+
+ }
+
+ else if (e.data.split("-")[0] == "USERCOORD") {
+        DataNewCoord = JSON.parse(e.data.split("-")[1]);
 
  }
 
@@ -156,17 +162,25 @@ else {
             iconCaption: "Диаграмма"
         });
 
-/*        var timerId = setInterval(function() {
-        */
-    
-        myMap.geoObjects
-        .add(myCollection);
 
-        latitude += 0.000060;
-         longitude += 0.000060;
- 
-   /*     }, 2000);
-*/
+
+
+
+
+
+        var timerId = setInterval(function(ids) {
+        
+        
+ console.log(DataNewCoord[1].latitude);
+showWorker(1);
+
+myMap.geoObjects
+        .add(myCollection);
+        }, 1000);
+
+
+
+
 
     let latworker = 0;
     let longworker = 0;
@@ -176,9 +190,9 @@ function showWorker(ids) {
 
     myCollection.removeAll();
 
-    latworker = DataNew[ids].latitude;
+    latworker = DataNewCoord[ids].latitude;
 
-    longworker = DataNew[ids].longitude;
+    longworker = DataNewCoord[ids].longitude;
 
     let placemark = new ymaps.Placemark([latworker, longworker], {
             balloonContent: '<strong>ТУТ WORKER'+latworker+":"+longworker+'</strong>'

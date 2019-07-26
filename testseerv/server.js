@@ -23,7 +23,7 @@ const webSocketServer = new WebSocket.Server({ port: 7777 });
 
 webSocketServer.on('connection', (webSocket) => {
   webSocket.on('message', (message) => {
-    console.log('Received:', message);
+    console.log('Received1:', message);
     //broadcast(message);
 
 
@@ -71,16 +71,23 @@ else if(coord_arr[0]=="status"){
         return console.error('error running query', err);
     }
     client_user_id = res.rows[0].user_id;
-    pool.query('SELECT id, deadline, text, status FROM public.task WHERE "user_id"=($1::int)', [client_user_id], function(err, res) {
-    if(err) {
-        return console.error('error running query', err);
-    }
-    //webSocket.send(JSON.stringify(res.rows));
-});
+    
 
 
 });
 });
+//    pool.query('INSERT INTO public.notifications (task_id, user_id, text) VALUES () WHERE "user_id"='+client_user_id, function(err, res) {
+//     if(err) {
+//         return console.error('error running query', err);
+//     }
+//     console.log('number: "vivelos"');
+//     pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], function(err, res) {
+//     if(err) {
+//         return console.error('error running query', err);
+//     }
+//     client_user_id = res.rows[0].user_id;
+// });
+// });
 }
 
 else {
@@ -105,7 +112,7 @@ const webSocketServerAdmin = new WebSocket.Server({ port: 3000 });
 
 webSocketServerAdmin.on('connection', (webSocketAdmin) => {
   webSocketAdmin.on('message', (messageAdmin) => {
-    console.log('Received:', messageAdmin);
+    console.log('Received2:', messageAdmin);
     const msg = messageAdmin;
     const pool = new Pool(config);
     pool.on('error', function (err, client) {
@@ -119,9 +126,26 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
     if(err) {
         return console.error('error running query', err);
     }
+
+     
     webSocketAdmin.send("USER-"+JSON.stringify(res.rows));
+ 
+
     console.log("USER "+JSON.stringify(res.rows));
 });
+    var timerId = setInterval(function() {
+    pool.query('SELECT * FROM public.user AS u, public.user_coord AS us where us.user_id = u.id ', function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+
+     
+    webSocketAdmin.send("USERCOORD-"+JSON.stringify(res.rows));
+ 
+
+    console.log("USER "+JSON.stringify(res.rows));
+});
+  }, 3000);
 }
     else if (msg.split(":")[0] == 'id_from_admin') {
 
