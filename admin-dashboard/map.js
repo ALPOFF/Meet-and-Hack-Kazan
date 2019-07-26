@@ -74,25 +74,36 @@ console.log(DataNew[cnt].id);
 
 
     DataNewTask = JSON.parse(e.data.split("-")[1]);
-    for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {
-        console.log("34 "+DataNewTask[tasks_counter].text);
-    }
+   
     
 
    function getTask(idsk) {
+
     console.log("IDSK VNUTRI" + idsk);
 
     $('#dialogTask').dialog({
         autoOpen: false,
+        position: { my: 'center', at: 'top+180' },
         title: 'Задание!'
     });
+
        
                 //for many tasks
 /*       for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {*/
-        console.log("KOL-VO: "+Object.keys(DataNewTask).length);
-    $('#dialogTask').dialog('open');
-     document.getElementById("dialogTask").innerHTML = ""; 
-     document.getElementById("dialogTask").innerHTML += DataNewTask[0].text;
+
+        document.getElementById("dialogTask").innerHTML = ""; 
+
+
+    for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {
+        document.getElementById("dialogTask").innerHTML +="<li>" +DataNewTask[tasks_counter].text+"</li>";
+    }
+
+
+        /*console.log("KOL-VO: "+Object.keys(DataNewTask).length);*/
+    
+     
+     
+      $('#dialogTask').dialog('open');
      /*}*/
 /*     
     //for one task
@@ -102,13 +113,12 @@ console.log(DataNew[cnt].id);
 };
 
 
-     document.querySelector('#dialog').addEventListener('click', function(event){ // Вешаем обработчик клика на UL, не LI
-    let idsk = event.target.id;  
+      // Вешаем обработчик клика на UL, не LI
+    let idsk = 0;  
     console.log("IDS: "+idsk)
 
     $(".shwr").on('click', getTask(idsk));
     //alert("VVERHU")
-})
  
  }
 
@@ -216,6 +226,7 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
     }
 
     $(".shwr").on('click', showWorker(ids));
+    //alert("vniz")
  });
 
 

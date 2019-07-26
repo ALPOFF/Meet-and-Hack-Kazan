@@ -2,7 +2,17 @@
 $( function() {
     $( "#dialog" ).dialog({
     	autoOpen: true,
-    	position: { my: 'left', at: 'left+150' },
+    	position: { my: 'left', at: 'left+60 top+180' },
+          open: function(event, ui) { $('.ui-dialog-titlebar-close').hide(); }
+        });
+  } );
+
+
+//notify
+$( function() {
+    $( "#dialogNotify" ).dialog({
+    	autoOpen: true,
+    	position: { my: 'right', at: 'right-60 top+180' },
           open: function(event, ui) { $('.ui-dialog-titlebar-close').hide(); }
         });
   } );
