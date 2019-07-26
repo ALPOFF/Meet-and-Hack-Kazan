@@ -134,6 +134,17 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
 });
 }
 
+    else if (msg.split(":")[0] == "task_admin") {
+
+        pool.query('INSERT INTO public.task (user_id, zone_id, time_add, deadline, text, status) VALUES ('+msg.split(":")[1]+', 1, null, \'18:00\', \''+msg.split(":")[2]+'\', false)', function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    webSocketAdmin.send("TASK-"+JSON.stringify(res.rows));
+    console.log("TASK "+JSON.stringify(res.rows))
+});
+    }
+
 else {
   console.log("ERROR");
 }

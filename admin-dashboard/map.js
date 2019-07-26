@@ -2,45 +2,7 @@
     let longitude = 48.743858;
     let myCollection;
 
-
-    const Data = { 
-        "0": {
-            "surname": "Иванов",
-            "latitude": 55.753141,
-            "longitude": 48.743111,
-            "task": "PRIVET"
-        },
-        "1": {
-            "surname": "Петров",
-            "latitude": 55.752676,
-            "longitude": 48.741427,
-            "task": "POKA"
-        },
-        "2": {
-            "surname": "Сидоров",
-            "latitude": 55.753769,
-            "longitude": 48.739904,
-            "task": "ZDRASTE" 
-        },
-        "3": {
-            "surname": "Смирнов",
-            "latitude": 55.749261,
-            "longitude": 48.743895,
-            "task": "BYE"
-        },
-        "4": {
-            "surname": "Ваньков",
-            "latitude": 55.748204,
-            "longitude": 48.741706,
-            "task": "HOROSH"
-        },
-        "5": {
-            "surname": "Костылев",
-            "latitude": 55.749092,
-            "longitude": 48.739571,
-            "task": "ZHIZNENNO"
-        },
-      }
+ 
 
 
 
@@ -87,16 +49,40 @@ console.log(DataNew[cnt].id);
         title: 'Задание!'
     });
 
-       
-                //for many tasks
-/*       for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {*/
+ 
 
         document.getElementById("dialogTask").innerHTML = ""; 
-
+        document.getElementById("dialogTask").innerHTML ="<div class = \"task_send\"><input class = \"taskval\" type=\"text\">"+"<button id = \"task_send\" class = \"task_send\">PUSH</button></div>";
 
     for (let tasks_counter = 0; tasks_counter < Object.keys(DataNewTask).length; tasks_counter++) {
+
         document.getElementById("dialogTask").innerHTML +="<li>" +DataNewTask[tasks_counter].text+"</li>";
     }
+
+
+
+ 
+
+    $('#task_send').on( 'click', sayHello );
+
+function sayHello(idsk) {
+
+         let x =document.getElementById("buffer").innerHTML;
+
+     let xxx = $(".taskval").val();
+    
+    console.log(x);
+    console.log(xxx);
+    
+
+
+
+    conn.send("task_admin:"+x+":"+xxx);
+
+}
+
+ 
+ 
 
 
         /*console.log("KOL-VO: "+Object.keys(DataNewTask).length);*/
@@ -114,10 +100,9 @@ console.log(DataNew[cnt].id);
 
 
       // Вешаем обработчик клика на UL, не LI
-    let idsk = 0;  
-    console.log("IDS: "+idsk)
 
-    $(".shwr").on('click', getTask(idsk));
+
+    $(".shwr").on('click', getTask(0));
     //alert("VVERHU")
  
  }
@@ -207,16 +192,19 @@ function showWorker(ids) {
 
 
 
+ 
 
 
 
 //show worker on map
-
+ 
 document.querySelector('#dialog').addEventListener('click', function(e){ // Вешаем обработчик клика на UL, не LI
-    let ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
-    conn.send("id_from_admin:"+ids);
+     ids = e.target.id; // Получили ID, т.к. в e.target содержится элемент по которому кликнули
+     document.getElementById("buffer").innerHTML =ids;
 
-    for (let cn in DataNew) {
+
+     conn.send("id_from_admin:"+ids);
+     for (let cn in DataNew) {
          
         if (DataNew[cn].id == ids) {
             ids = cn;
@@ -228,13 +216,15 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
     $(".shwr").on('click', showWorker(ids));
     //alert("vniz")
  });
-
+ 
 
 conn.onopen = () => {
  
  conn.send('hello');
 
 }
+
+    
     }
 
 
