@@ -181,7 +181,7 @@ else {
 
 
 
-        var timerId = setInterval(function(ids) {
+/*        var timerId = setInterval(function(ids) {
         
         
  console.log(DataNewCoord[1].latitude);
@@ -189,7 +189,7 @@ showWorker(1);
 
 myMap.geoObjects
         .add(myCollection);
-        }, 1000);
+        }, 1000);*/
 
 
 
@@ -214,7 +214,8 @@ function showWorker(ids) {
             iconColor: 'blue'
         });
     myCollection.add(placemark);
-
+myMap.geoObjects
+        .add(myCollection);
 }
 
 
@@ -240,7 +241,7 @@ document.querySelector('#dialog').addEventListener('click', function(e){ // Ве
         }
     }
 
-    $(".shwr").on('click', showWorker(ids));
+    $(".shwr").on('click', setInterval(function() {showWorker(ids)},1000));
     //alert("vniz")
  });
  

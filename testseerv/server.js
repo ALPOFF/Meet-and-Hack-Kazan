@@ -61,7 +61,7 @@ pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], fun
 });
 }
 else if(coord_arr[0]=="status"){
-  pool.query('UPDATE public.task SET "status"=true WHERE "user_id"='+client_user_id, function(err, res) {
+  pool.query('UPDATE public.task SET "status"=true WHERE "id"='+coord_arr[1], function(err, res) {
     if(err) {
         return console.error('error running query', err);
     }
