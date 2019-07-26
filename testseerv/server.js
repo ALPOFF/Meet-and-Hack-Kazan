@@ -76,18 +76,18 @@ else if(coord_arr[0]=="status"){
 
 });
 });
-//    pool.query('INSERT INTO public.notifications (task_id, user_id, text) VALUES () WHERE "user_id"='+client_user_id, function(err, res) {
-//     if(err) {
-//         return console.error('error running query', err);
-//     }
-//     console.log('number: "vivelos"');
-//     pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], function(err, res) {
-//     if(err) {
-//         return console.error('error running query', err);
-//     }
-//     client_user_id = res.rows[0].user_id;
-// });
-// });
+   pool.query('INSERT INTO notification (task_id, user_id, text) VALUES ('+coord_arr[1]+', '+client_user_id+', (SELECT text FROM task WHERE id='+coord_arr[1]+'))', function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    console.log('number: "vivelos"');
+    pool.query('SELECT * FROM public.imei WHERE "imei"=($1::text)', [user_imei], function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+    client_user_id = res.rows[0].user_id;
+});
+});
 }
 
 else {
@@ -132,6 +132,15 @@ webSocketServerAdmin.on('connection', (webSocketAdmin) => {
  
 
     console.log("USER "+JSON.stringify(res.rows));
+});
+    pool.query('SELECT * FROM public.notification', function(err, res) {
+    if(err) {
+        return console.error('error running query', err);
+    }
+
+     
+    webSocketAdmin.send("Notification-"+JSON.stringify(res.rows));
+    console.log("Notification-"+JSON.stringify(res.rows))
 });
     var timerId = setInterval(function() {
     pool.query('SELECT * FROM public.user AS u, public.user_coord AS us where us.user_id = u.id ', function(err, res) {

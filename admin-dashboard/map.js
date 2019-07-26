@@ -37,6 +37,19 @@ console.log(DataNew[cnt].id);
 
  }
 
+else if (e.data.split("-")[0] == "Notification") {
+        DataNotification = JSON.parse(e.data.split("-")[1]);
+
+            for (cnt = 0; cnt < Object.keys(DataNotification).length; cnt++)
+     {
+        
+      document.getElementById("dialogNotify").innerHTML +="Id: "+DataNotification[cnt].id + "</br>"+ "TaskId: "+DataNotification[cnt].task_id+ "</br>"+"UserId: "+DataNotification[cnt].user_id+"</br>"+"Text: "+DataNotification[cnt].text+"</br>"+"Time: "+DataNotification[cnt].time+"</br>"+"</br>"; 
+ 
+     
+ }
+ }
+
+
 
  else if (e.data.split("-")[0] == "TASK") {
 

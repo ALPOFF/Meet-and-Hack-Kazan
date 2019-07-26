@@ -100,5 +100,5 @@ input {
 }
 
 .buffer {
-	display: none;
+	visibility: hidden;
 }
